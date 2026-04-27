@@ -1,0 +1,3061 @@
+@prefix : <http://www.uoc.edu/knowledgeManagement/eu-medical-devices#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.uoc.edu/knowledgeManagement/eu-medical-devices#> .
+
+<http://www.uoc.edu/knowledgeManagement/eu-medical-devices> rdf:type owl:Ontology ;
+                                                             owl:versionIRI <http://www.uoc.edu/knowledgeManagement/eu-medical-devices/1.0.0> ;
+                                                             <http://purl.org/dc/terms/creator> "Jesús Maceda Martinez" ;
+                                                             <http://purl.org/dc/terms/description> "An OWL ontology for representing medical devices marketed in the European Union, including manufacturers, device types, regulatory frameworks, risk classes, known risks, incidents, affected patients and field safety corrective actions. The ontology is populated from CSV datasets and supports semantic reasoning through SWRL rules and external RDF links." ;
+                                                             <http://purl.org/dc/terms/title> "EU Medical Devices Ontology" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+<http://purl.org/dc/terms/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
+<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#affectedPatient
+:affectedPatient rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Incident ;
+                 rdfs:range :Patient ;
+                 rdfs:comment "Relates an incident to the affected patient." ;
+                 rdfs:label "affected patient" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#associatedRisk
+:associatedRisk rdf:type owl:ObjectProperty ;
+                rdfs:domain :Incident ;
+                rdfs:range :Risk ;
+                rdfs:comment "Links an incident to the related risk." ;
+                rdfs:label "associated risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#correctiveActionFor
+:correctiveActionFor rdf:type owl:ObjectProperty ;
+                     owl:inverseOf :hasCorrectiveAction ;
+                     rdfs:domain :FieldSafetyCorrectiveAction ;
+                     rdfs:range :Incident ;
+                     rdfs:comment "Relates a corrective action to the incident that originated it." ;
+                     rdfs:label "corrective action for" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasCompetentAuthority
+:hasCompetentAuthority rdf:type owl:ObjectProperty ;
+                       rdfs:domain :Manufacturer ;
+                       rdfs:range :CompetentAuthority ;
+                       rdfs:comment "Relates a manufacturer to the competent authority responsible for oversight." ;
+                       rdfs:label "has competent authority" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasCorrectiveAction
+:hasCorrectiveAction rdf:type owl:ObjectProperty ;
+                     rdfs:domain :Incident ;
+                     rdfs:range :FieldSafetyCorrectiveAction ;
+                     rdfs:comment "Links an incident to corrective actions taken." ;
+                     rdfs:label "has corrective action" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasDeviceType
+:hasDeviceType rdf:type owl:ObjectProperty ;
+               rdfs:domain :Device ;
+               rdfs:range :DeviceType ;
+               rdfs:comment "Relates a device to one or more controlled device types." ;
+               rdfs:label "has device type" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasFSCAStatus
+:hasFSCAStatus rdf:type owl:ObjectProperty ;
+               rdfs:domain :FieldSafetyCorrectiveAction ;
+               rdfs:range :FSCAStatusConcept ;
+               rdfs:comment "Relates a field safety corrective action to its current status." ;
+               rdfs:label "has FSCA status" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasIncident
+:hasIncident rdf:type owl:ObjectProperty ;
+             owl:inverseOf :involvesDevice ;
+             rdfs:domain :Device ;
+             rdfs:range :Incident ;
+             rdfs:comment "Relates a device to incidents in which the device was involved." ;
+             rdfs:label "has incident" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasKnownRisk
+:hasKnownRisk rdf:type owl:ObjectProperty ;
+              owl:inverseOf :impactsDeviceType ;
+              rdfs:domain :DeviceType ;
+              rdfs:range :Risk ;
+              rdfs:comment "Relates a device type to known associated risks." ;
+              rdfs:label "has known risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasManufacturer
+:hasManufacturer rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :manufactures ;
+                 rdfs:domain :Device ;
+                 rdfs:range :Manufacturer ;
+                 rdfs:comment "Relates a device to its legal manufacturer." ;
+                 rdfs:label "has manufacturer" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasRegulatoryFramework
+:hasRegulatoryFramework rdf:type owl:ObjectProperty ;
+                        rdfs:domain :Device ;
+                        rdfs:range :RegulatoryFramework ;
+                        rdfs:comment "Relates a device to the regulatory framework under which it is registered." ;
+                        rdfs:label "has regulatory framework" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasRiskCategory
+:hasRiskCategory rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Risk ;
+                 rdfs:range :CategoryConcept ;
+                 rdfs:comment "Relates a risk to its controlled risk category." ;
+                 rdfs:label "has risk category" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasRiskClass
+:hasRiskClass rdf:type owl:ObjectProperty ;
+              rdfs:domain :Device ;
+              rdfs:range :RiskClass ;
+              rdfs:comment "Relates a device to its regulatory risk classification." ;
+              rdfs:label "has risk class" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasRiskProbability
+:hasRiskProbability rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Risk ;
+                    rdfs:range :ProbabilityConcept ;
+                    rdfs:comment "Relates a risk to its probability level." ;
+                    rdfs:label "has risk probability" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#hasRiskSeverity
+:hasRiskSeverity rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Risk ;
+                 rdfs:range :SeverityConcept ;
+                 rdfs:comment "Relates a risk to its severity level." ;
+                 rdfs:label "has risk severity" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#impactsDeviceType
+:impactsDeviceType rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Risk ;
+                   rdfs:range :DeviceType ;
+                   rdfs:comment "Indicates the device type affected by a risk.." ;
+                   rdfs:label "impacts device type" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#involvesDevice
+:involvesDevice rdf:type owl:ObjectProperty ;
+                rdfs:domain :Incident ;
+                rdfs:range :Device ;
+                rdfs:comment "Links an incident to the device involved." ;
+                rdfs:label "involves device" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#involvesManufacturer
+:involvesManufacturer rdf:type owl:ObjectProperty ;
+                      rdfs:domain :Incident ;
+                      rdfs:range :Manufacturer ;
+                      rdfs:comment "Inferred relation linking an incident to the manufacturer of the involved device." ;
+                      rdfs:label "involves manufacturer" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#isReportedBy
+:isReportedBy rdf:type owl:ObjectProperty ;
+              rdfs:domain :Incident ;
+              rdfs:range :Manufacturer ;
+              rdfs:comment "Relates an incident to the manufacturer that reported it." ;
+              rdfs:label "is reported by" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#locatedInCountry
+:locatedInCountry rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Organization ;
+                  rdfs:range :Country ;
+                  rdfs:comment "Relates an organization to the country where it is registered or located." ;
+                  rdfs:label "located in country" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#manufactures
+:manufactures rdf:type owl:ObjectProperty ;
+              rdfs:domain :Manufacturer ;
+              rdfs:range :Device ;
+              rdfs:comment "Relates a manufacturer to devices it manufactures." ;
+              rdfs:label "manufactures" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#reportedInCountry
+:reportedInCountry rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Incident ;
+                   rdfs:range :Country ;
+                   rdfs:comment "Relates an incident to the country where it was reported." ;
+                   rdfs:label "reported in country" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://schema.org/description
+<http://schema.org/description> rdf:type owl:DatatypeProperty ;
+                                rdfs:range xsd:string ;
+                                rdfs:comment "Textual description of the entity." ;
+                                rdfs:label "description" .
+
+
+###  http://schema.org/email
+<http://schema.org/email> rdf:type owl:DatatypeProperty .
+
+
+###  http://schema.org/gender
+<http://schema.org/gender> rdf:type owl:DatatypeProperty .
+
+
+###  http://schema.org/identifier
+<http://schema.org/identifier> rdf:type owl:DatatypeProperty .
+
+
+###  http://schema.org/name
+<http://schema.org/name> rdf:type owl:DatatypeProperty ;
+                         rdfs:range xsd:string ;
+                         rdfs:comment "Human-readable name of the entity." ;
+                         rdfs:label "name" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#actionDate
+:actionDate rdf:type owl:DatatypeProperty ;
+            rdfs:domain :FieldSafetyCorrectiveAction ;
+            rdfs:range xsd:date ;
+            rdfs:comment "Date on which the corrective action was initiated." ;
+            rdfs:label "action date" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#authorizationNumber
+:authorizationNumber rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf <http://schema.org/identifier> ;
+                     rdfs:domain :Manufacturer ;
+                     rdfs:range xsd:token ;
+                     rdfs:comment "Authorization or registration number assigned to a manufacturer." ;
+                     rdfs:label "authorization number" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#closureDate
+:closureDate rdf:type owl:DatatypeProperty ;
+             rdfs:domain :FieldSafetyCorrectiveAction ;
+             rdfs:range xsd:date ;
+             rdfs:comment "Date on which the corrective action was closed." ;
+             rdfs:label "clusure date" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#detectionDate
+:detectionDate rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Incident ;
+               rdfs:range xsd:date ;
+               rdfs:comment "Date on which the incident was detected." ;
+               rdfs:label "detection date" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#devicesAffected
+:devicesAffected rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :FieldSafetyCorrectiveAction ;
+                 rdfs:range xsd:string ;
+                 rdfs:comment "Number or textual quantity of devices affected by a corrective action." ;
+                 rdfs:label "devices affected" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#eudamedFSCARef
+:eudamedFSCARef rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf <http://schema.org/identifier> ;
+                rdfs:domain :FieldSafetyCorrectiveAction ;
+                rdfs:range xsd:token ;
+                rdfs:comment "Reference identifier assigned to a field safety corrective action." ;
+                rdfs:label "EUDAMED FSCA reference" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#eudamedIncidentRef
+:eudamedIncidentRef rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf <http://schema.org/identifier> ;
+                    rdfs:domain :Incident ;
+                    rdfs:range xsd:token ;
+                    rdfs:comment "Reference identifier assigned to an incident report." ;
+                    rdfs:label "EUDAMED incident reference" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#eudamedSRN
+:eudamedSRN rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Manufacturer ;
+            rdfs:range xsd:token ;
+            rdfs:comment "Single Registration Number assigned to an economic operator in EUDAMED." ;
+            rdfs:label "EUDAMED SRN" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#eventDate
+:eventDate rdf:type owl:DatatypeProperty ;
+           rdfs:domain :Incident ;
+           rdfs:range xsd:date ;
+           rdfs:comment "Date on which the incident occurred." ;
+           rdfs:label "event date" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#imdrfCode
+:imdrfCode rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf <http://schema.org/identifier> ;
+           rdfs:domain :Risk ;
+           rdfs:range xsd:token ;
+           rdfs:comment "Code identifying a risk according to an IMDRF-style classification." ;
+           rdfs:label "IMDRF code" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#intendedPurpose
+:intendedPurpose rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Device ;
+                 rdfs:range xsd:string ;
+                 rdfs:comment "Intended medical purpose or use of the device." ;
+                 rdfs:label "intended purpose" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#isActive
+:isActive rdf:type owl:DatatypeProperty ;
+          rdfs:domain :Device ;
+          rdfs:range xsd:boolean ;
+          rdfs:comment "Indicates whether the device is an active device according to the source data." ;
+          rdfs:label "is active" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#isImplantable
+:isImplantable rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Device ;
+               rdfs:range xsd:boolean ;
+               rdfs:comment "Indicates whether the device is intended to be implanted in the human body." ;
+               rdfs:label "is implantable" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#isReusable
+:isReusable rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Device ;
+            rdfs:range xsd:boolean ;
+            rdfs:comment "Indicates whether the device is intended for multiple uses." ;
+            rdfs:label "is reusable" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#outcome
+:outcome rdf:type owl:DatatypeProperty ;
+         rdfs:domain :Incident ;
+         rdfs:range xsd:string ;
+         rdfs:comment "Textual description of the incident outcome." ;
+         rdfs:label "outcome" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#patientAge
+:patientAge rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Patient ;
+            rdfs:range xsd:integer ;
+            rdfs:comment "Age of the affected patient in years." ;
+            rdfs:label "patient age" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#reportDate
+:reportDate rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Incident ;
+            rdfs:range xsd:date ;
+            rdfs:comment "Date on which the incident was officially reported." ;
+            rdfs:label "report date" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#scope
+:scope rdf:type owl:DatatypeProperty ;
+       rdfs:domain :FieldSafetyCorrectiveAction ;
+       rdfs:range xsd:string ;
+       rdfs:comment "Description of products, lots, units or users covered by a corrective action." ;
+       rdfs:label "scope" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#udiDI
+:udiDI rdf:type owl:DatatypeProperty ;
+       rdfs:subPropertyOf <http://schema.org/identifier> ;
+       rdfs:domain :Device ;
+       rdfs:range xsd:token ;
+       rdfs:comment "Unique Device Identifier - Device Identifier." ;
+       rdfs:label "UDI-DI" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://schema.org/MedicalDevice
+<http://schema.org/MedicalDevice> rdf:type owl:Class .
+
+
+###  http://schema.org/Person
+<http://schema.org/Person> rdf:type owl:Class .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#CategoryConcept
+:CategoryConcept rdf:type owl:Class ;
+                 rdfs:comment "Controlled concept representing a category used to classify risks." ;
+                 rdfs:label "Risk category concept" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#CompetentAuthority
+:CompetentAuthority rdf:type owl:Class ;
+                    rdfs:subClassOf :Organization ;
+                    rdfs:comment "Public authority responsible for medical device oversight in a country." ;
+                    rdfs:label "Competent authority" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ContaminationRisk
+:ContaminationRisk rdf:type owl:Class ;
+                   rdfs:subClassOf :Risk ;
+                   rdfs:comment "Risk related to contamination of device components, reagents or materials." ;
+                   rdfs:label "Contamination risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#CorrectedIncident
+:CorrectedIncident rdf:type owl:Class ;
+                   rdfs:comment "Incident inferred as having at least one associated corrective action." ;
+                   rdfs:label "Corrected incident" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Country
+:Country rdf:type owl:Class ;
+         rdfs:comment "Nation in which a manufacturer, incident or corrective action is registered." ;
+         rdfs:label "Country" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#CybersecurityRisk
+:CybersecurityRisk rdf:type owl:Class ;
+                   rdfs:subClassOf :Risk ;
+                   rdfs:comment "Risks arising from cybersecurity failures." ;
+                   rdfs:label "Cybersecuty risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Device
+:Device rdf:type owl:Class ;
+        rdfs:subClassOf <http://schema.org/MedicalDevice> ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasDeviceType ;
+                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :DeviceType
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasManufacturer ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :Manufacturer
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasRegulatoryFramework ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :RegulatoryFramework
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasRiskClass ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :RiskClass
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://schema.org/name> ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:string
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :intendedPurpose ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:string
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :isActive ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:boolean
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :isImplantable ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:boolean
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :isReusable ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:boolean
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :udiDI ;
+                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onDataRange xsd:token
+                        ] ;
+        rdfs:comment "Medical device placed on the European market under MDR or IVDR regulations." ;
+        rdfs:label "Device" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DeviceType
+:DeviceType rdf:type owl:Class ;
+            rdfs:comment "Controlled classification describing the functional or structural type of device." ;
+            rdfs:label "Device type" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DiagnosticRisk
+:DiagnosticRisk rdf:type owl:Class ;
+                rdfs:subClassOf :Risk ;
+                rdfs:comment "Risk related to incorrect diagnostic results or interpretation." ;
+                rdfs:label "Diagnostic risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCAStatusConcept
+:FSCAStatusConcept rdf:type owl:Class ;
+                   rdfs:comment "Controlled concept representing the status of a field safety corrective action." ;
+                   rdfs:label "FCSA status concept" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FieldSafetyCorrectiveAction
+:FieldSafetyCorrectiveAction rdf:type owl:Class ;
+                             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                               owl:onProperty :correctiveActionFor ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onClass :Incident
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :hasFSCAStatus ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onClass :FSCAStatusConcept
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty <http://schema.org/description> ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :actionDate ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:date
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :devicesAffected ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :eudamedFSCARef ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:token
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :scope ;
+                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :closureDate ;
+                                               owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                               owl:onDataRange xsd:date
+                                             ] ;
+                             rdfs:comment "Corrective measure taken to reduce risks associated with marketed devices." ;
+                             rdfs:label "Field safety corrective action" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#HighRiskDevice
+:HighRiskDevice rdf:type owl:Class ;
+                rdfs:comment "Device inferred as high risk according to its regulatory risk class." ;
+                rdfs:label "High-risk device" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#IVDDevice
+:IVDDevice rdf:type owl:Class ;
+           rdfs:subClassOf :Device ;
+           owl:disjointWith :MDRDevice ;
+           rdfs:comment "In vitro diagnostic device regulated under the IVDR regulation." ;
+           rdfs:label "IVD device" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#InSituCorrection
+:InSituCorrection rdf:type owl:Class ;
+                  rdfs:subClassOf :FieldSafetyCorrectiveAction ;
+                  owl:disjointWith :Recall ,
+                                   :SafetyAlert ,
+                                   :UserNotice ;
+                  rdfs:comment "Corrective action applied while the device remains in use or in place." ;
+                  rdfs:label "In situ correction" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Incident
+:Incident rdf:type owl:Class ;
+          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty :involvesDevice ;
+                            owl:someValuesFrom :Device
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :associatedRisk ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :Risk
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :isReportedBy ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :Manufacturer
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :reportedInCountry ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :Country
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :affectedPatient ;
+                            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :Patient
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty <http://schema.org/description> ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :detectionDate ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:date
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :eudamedIncidentRef ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:token
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :eventDate ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:date
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :outcome ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :reportDate ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onDataRange xsd:date
+                          ] ;
+          rdfs:comment "Reported event involving a medical device that may cause harm or malfunction." ;
+          rdfs:label "Incident" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#InjuryRisk
+:InjuryRisk rdf:type owl:Class ;
+            rdfs:subClassOf :Risk ;
+            rdfs:comment "Risk that may result in patient injury or deterioration of health." ;
+            rdfs:label "Injury risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#InterferenceRisk
+:InterferenceRisk rdf:type owl:Class ;
+                  rdfs:subClassOf :Risk ;
+                  rdfs:comment "Risk related to electromagnetic, imaging or operational interference." ;
+                  rdfs:label "Interference risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MDRDevice
+:MDRDevice rdf:type owl:Class ;
+           rdfs:subClassOf :Device ;
+           rdfs:comment "Medical device regulated under the European MDR regulation." ;
+           rdfs:label "MDR Device" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MalfunctionRisk
+:MalfunctionRisk rdf:type owl:Class ;
+                 rdfs:subClassOf :Risk ;
+                 rdfs:comment "Risk related to device malfunction or failure to perform as intended." ;
+                 rdfs:label "Malfunction risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Manufacturer
+:Manufacturer rdf:type owl:Class ;
+              rdfs:subClassOf :Organization ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasCompetentAuthority ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onClass :CompetentAuthority
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :locatedInCountry ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onClass :Country
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty <http://schema.org/email> ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:string
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :authorizationNumber ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:token
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :eudamedSRN ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:token
+                              ] ;
+              rdfs:comment "Organization legally responsible for manufacturing a medical device." ;
+              rdfs:label "Manufacturer" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MaterialRisk
+:MaterialRisk rdf:type owl:Class ;
+              rdfs:subClassOf :Risk ;
+              rdfs:comment "Risk related to device materials, degradation, wear or corrosion." ;
+              rdfs:label "Material risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#NearMissIncident
+:NearMissIncident rdf:type owl:Class ;
+                  rdfs:subClassOf :Incident ;
+                  rdfs:comment "Incident that could have led to harm but was avoided or did not occur." ;
+                  rdfs:label "Near-miss incident" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Organization
+:Organization rdf:type owl:Class ;
+              rdfs:subClassOf <http://www.w3.org/ns/org#Organization> ;
+              rdfs:comment "Legal or institutional entity involved in the medical device domain." ;
+              rdfs:label "Organization" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Patient
+:Patient rdf:type owl:Class ;
+         rdfs:subClassOf <http://schema.org/Person> ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://schema.org/gender> ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :patientAge ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:integer
+                         ] ;
+         rdfs:comment "Person affected by a medical device incident.Person affected by a medical device incident." ;
+         rdfs:label "Patient" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ProbabilityConcept
+:ProbabilityConcept rdf:type owl:Class ;
+                    rdfs:comment "Controlled concept representing the probability level of a risk." ;
+                    rdfs:label "Probability concept" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RadiationRisk
+:RadiationRisk rdf:type owl:Class ;
+               rdfs:subClassOf :Risk ;
+               rdfs:comment "Risk related to unsafe or unintended radiation exposure." ;
+               rdfs:label "Radiation risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Recall
+:Recall rdf:type owl:Class ;
+        rdfs:subClassOf :FieldSafetyCorrectiveAction ;
+        owl:disjointWith :SafetyAlert ,
+                         :UserNotice ;
+        rdfs:comment "Corrective action involving withdrawal, replacement or removal of affected devices." ;
+        rdfs:label "Recall" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RegulatoryFramework
+:RegulatoryFramework rdf:type owl:Class ;
+                     rdfs:comment "Regulation under which a device is registered or marketed." ;
+                     rdfs:label "Regulatory framework" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ReportingEntity
+:ReportingEntity rdf:type owl:Class ;
+                 rdfs:subClassOf :Organization ;
+                 rdfs:comment "Entity responsible for reporting an incident." ;
+                 rdfs:label "Reporting entity" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Risk
+:Risk rdf:type owl:Class ;
+      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                        owl:onProperty :impactsDeviceType ;
+                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :DeviceType
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasRiskCategory ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :CategoryConcept
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasRiskProbability ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :ProbabilityConcept
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasRiskSeverity ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :SeverityConcept
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty <http://schema.org/description> ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onDataRange xsd:string
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty <http://schema.org/name> ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onDataRange xsd:string
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :imdrfCode ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onDataRange xsd:token
+                      ] ;
+      rdfs:comment "Potential hazard or adverse event associated with a medical device." ;
+      rdfs:label "Risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RiskClass
+:RiskClass rdf:type owl:Class ;
+           rdfs:comment "Regulatory classification indicating the risk level of a medical device." ;
+           rdfs:label "Risk class" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#SafetyAlert
+:SafetyAlert rdf:type owl:Class ;
+             rdfs:subClassOf :FieldSafetyCorrectiveAction ;
+             owl:disjointWith :UserNotice ;
+             rdfs:comment "Corrective action communicating urgent safety information." ;
+             rdfs:label "Safety alert" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#SeriousIncident
+:SeriousIncident rdf:type owl:Class ;
+                 rdfs:subClassOf :Incident ;
+                 rdfs:comment "Incident that caused or could have caused serious harm or health deterioration." ;
+                 rdfs:label "Serious incident" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#SeverityConcept
+:SeverityConcept rdf:type owl:Class ;
+                 rdfs:comment "Controlled concept representing the severity level of a risk." ;
+                 rdfs:label "Severity concept" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#SoftwareRisk
+:SoftwareRisk rdf:type owl:Class ;
+              rdfs:subClassOf :Risk ;
+              rdfs:comment "Risk related to software malfunction, configuration or algorithmic error." ;
+              rdfs:label "Software risk" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#UserNotice
+:UserNotice rdf:type owl:Class ;
+            rdfs:subClassOf :FieldSafetyCorrectiveAction ;
+            rdfs:comment "Corrective action consisting of notification." ;
+            rdfs:label "User notice" .
+
+
+###  http://www.w3.org/ns/org#Organization
+<http://www.w3.org/ns/org#Organization> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#AgenceFDRaleDesMDicamentsEtDesProduitsDeSant
+:AgenceFDRaleDesMDicamentsEtDesProduitsDeSant rdf:type owl:NamedIndividual ,
+                                                       :CompetentAuthority ;
+                                              :locatedInCountry :Belgium ;
+                                              <http://schema.org/name> "Agence fédérale des médicaments et des produits de santé (AFMPS)" ;
+                                              rdfs:comment "Competent authority associated with manufacturers in Belgium."@en ;
+                                              rdfs:label "Agence fédérale des médicaments et des produits de santé (AFMPS)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#AgenceNationaleDeSCuritDuMDicament
+:AgenceNationaleDeSCuritDuMDicament rdf:type owl:NamedIndividual ,
+                                             :CompetentAuthority ;
+                                    :locatedInCountry :France ;
+                                    <http://schema.org/name> "Agence nationale de sécurité du médicament (ANSM)" ;
+                                    rdfs:comment "Competent authority associated with manufacturers in France."@en ;
+                                    rdfs:label "Agence nationale de sécurité du médicament (ANSM)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Belgium
+:Belgium rdf:type owl:NamedIndividual ,
+                  :Country ;
+         owl:sameAs <https://dbpedia.org/resource/Belgium> ;
+         <http://schema.org/name> "Belgium" ;
+         rdfs:comment "Country individual imported from CSV value 'Belgium'."@en ;
+         rdfs:label "Belgium"@en ;
+         rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/BEL> .
+
+
+###  https://dbpedia.org/resource/Belgium
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#BundesinstitutFRArzneimittelUndMedizinprodukte
+:BundesinstitutFRArzneimittelUndMedizinprodukte rdf:type owl:NamedIndividual ,
+                                                         :CompetentAuthority ;
+                                                :locatedInCountry :Germany ;
+                                                <http://schema.org/name> "Bundesinstitut für Arzneimittel und Medizinprodukte (BfArM)" ;
+                                                rdfs:comment "Competent authority associated with manufacturers in Germany."@en ;
+                                                rdfs:label "Bundesinstitut für Arzneimittel und Medizinprodukte (BfArM)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassC
+:ClassC rdf:type owl:NamedIndividual ,
+                 :RiskClass ;
+        rdfs:comment "Controlled risk class individual: Class C."@en ;
+        rdfs:label "Class C"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassD
+:ClassD rdf:type owl:NamedIndividual ,
+                 :RiskClass ;
+        rdfs:comment "Controlled risk class individual: Class D."@en ;
+        rdfs:label "Class D"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassI
+:ClassI rdf:type owl:NamedIndividual ,
+                 :RiskClass ;
+        rdfs:comment "Controlled risk class individual: Class I."@en ;
+        rdfs:label "Class I"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassIII
+:ClassIII rdf:type owl:NamedIndividual ,
+                   :RiskClass ;
+          rdfs:comment "Controlled risk class individual: Class III."@en ;
+          rdfs:label "Class III"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassIIa
+:ClassIIa rdf:type owl:NamedIndividual ,
+                   :RiskClass ;
+          rdfs:comment "Controlled risk class individual: Class IIa."@en ;
+          rdfs:label "Class IIa"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ClassIIb
+:ClassIIb rdf:type owl:NamedIndividual ,
+                   :RiskClass ;
+          rdfs:comment "Controlled risk class individual: Class IIb."@en ;
+          rdfs:label "Class IIb"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Closed
+:Closed rdf:type owl:NamedIndividual ,
+                 :FSCAStatusConcept ;
+        rdfs:comment "FSCA status concept individual: Closed."@en ;
+        rdfs:label "Closed"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Critical
+:Critical rdf:type owl:NamedIndividual ,
+                   :SeverityConcept ;
+          rdfs:comment "Risk severity concept individual: Critical."@en ;
+          rdfs:label "Critical"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV001
+:DEV001 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableActiveDeviceType ;
+        :hasManufacturer :MAN001 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "HeartMate 3 LVAD" ;
+        :intendedPurpose "Ventricular assist device for end-stage heart failure" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)00380740009095"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-001."@en ;
+        rdfs:label "HeartMate 3 LVAD"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV002
+:DEV002 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeImplantDeviceType ;
+        :hasManufacturer :MAN001 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Micra AV Transcatheter Pacing System" ;
+        :intendedPurpose "Leadless cardiac pacemaker for atrioventricular synchrony" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)00380740009112"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-002."@en ;
+        rdfs:label "Micra AV Transcatheter Pacing System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV003
+:DEV003 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableDeviceType ;
+        :hasManufacturer :MAN002 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Portico Transcatheter Heart Valve" ;
+        :intendedPurpose "Transcatheter aortic valve replacement (TAVI)" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)00800002222291"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-003."@en ;
+        rdfs:label "Portico Transcatheter Heart Valve"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV004
+:DEV004 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableActiveDeviceType ;
+        :hasManufacturer :MAN006 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIb ;
+        <http://schema.org/name> "SYNERGY Stent System" ;
+        :intendedPurpose "Drug-eluting coronary stent" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)08714729002817"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-004."@en ;
+        rdfs:label "SYNERGY Stent System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV005
+:DEV005 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeImplantDeviceType ;
+        :hasManufacturer :MAN006 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "ACUITY X4 Quadripolar LV Lead" ;
+        :intendedPurpose "Cardiac resynchronization therapy lead" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)08714729004873"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-005."@en ;
+        rdfs:label "ACUITY X4 Quadripolar LV Lead"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV006
+:DEV006 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :singleUseDeviceType ;
+        :hasManufacturer :MAN004 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIb ;
+        <http://schema.org/name> "STELLAREX Drug-Coated Balloon" ;
+        :intendedPurpose "Peripheral artery drug-coated angioplasty balloon" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)08718998000001"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-006."@en ;
+        rdfs:label "STELLAREX Drug-Coated Balloon"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV007
+:DEV007 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN003 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIa ;
+        <http://schema.org/name> "ACUSON Sequoia Ultrasound" ;
+        :intendedPurpose "Diagnostic ultrasound imaging system" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)04054839450001"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-007."@en ;
+        rdfs:label "ACUSON Sequoia Ultrasound"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV008
+:DEV008 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN003 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIa ;
+        <http://schema.org/name> "MAGNETOM Vida MRI System" ;
+        :intendedPurpose "Magnetic resonance imaging system 3T" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)04054839460002"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-008."@en ;
+        rdfs:label "MAGNETOM Vida MRI System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV009
+:DEV009 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableDeviceType ;
+        :hasManufacturer :MAN010 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Persona Knee System" ;
+        :intendedPurpose "Total knee arthroplasty implant system" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)07612345001001"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-009."@en ;
+        rdfs:label "Persona Knee System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV010
+:DEV010 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableDeviceType ;
+        :hasManufacturer :MAN007 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "TRITON Total Hip System" ;
+        :intendedPurpose "Ceramic-on-ceramic total hip replacement" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)09876543002002"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-010."@en ;
+        rdfs:label "TRITON Total Hip System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV011
+:DEV011 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeImplantDeviceType ;
+        :hasManufacturer :MAN011 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Iluvien Intravitreal Implant" ;
+        :intendedPurpose "Sustained-release fluocinolone acetonide ocular implant" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)05391520001011"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-011."@en ;
+        rdfs:label "Iluvien Intravitreal Implant"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV012
+:DEV012 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeImplantDeviceType ;
+        :hasManufacturer :MAN008 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Viva Cardiac Resynchronization Defibrillator" ;
+        :intendedPurpose "Cardiac resynchronization therapy with defibrillation" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)04012099001012"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-012."@en ;
+        rdfs:label "Viva Cardiac Resynchronization Defibrillator"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV013
+:DEV013 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN012 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIb ;
+        <http://schema.org/name> "ATERA Mechanical Ventilator" ;
+        :intendedPurpose "ICU mechanical ventilator with pressure and volume modes" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)04046539001013"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-013."@en ;
+        rdfs:label "ATERA Mechanical Ventilator"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV014
+:DEV014 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN004 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIa ;
+        <http://schema.org/name> "Lumify Portable Ultrasound" ;
+        :intendedPurpose "Handheld point-of-care ultrasound probe" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)08718998001014"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-014."@en ;
+        rdfs:label "Lumify Portable Ultrasound"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV015
+:DEV015 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN013 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIb ;
+        <http://schema.org/name> "Hemodialysis Machine 5008S" ;
+        :intendedPurpose "High-volume online hemodiafiltration machine" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)04547597001015"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-015."@en ;
+        rdfs:label "Hemodialysis Machine 5008S"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV016
+:DEV016 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :inVitroDiagnosticDeviceType ;
+        :hasManufacturer :MAN005 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassC ;
+        <http://schema.org/name> "cobas e 801 Immunoassay Analyzer" ;
+        :intendedPurpose "Automated immunoassay analyzer for clinical laboratory" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)04015630001016"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-016."@en ;
+        rdfs:label "cobas e 801 Immunoassay Analyzer"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV017
+:DEV017 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :inVitroDiagnosticDeviceType ;
+        :hasManufacturer :MAN005 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassC ;
+        <http://schema.org/name> "cobas SARS-CoV-2 RT-PCR Test" ;
+        :intendedPurpose "Molecular diagnostic test for SARS-CoV-2 detection" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)04015630001017"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-017."@en ;
+        rdfs:label "cobas SARS-CoV-2 RT-PCR Test"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV018
+:DEV018 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :inVitroDiagnosticDeviceType ;
+        :hasManufacturer :MAN015 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassD ;
+        <http://schema.org/name> "VIDAS HIV DUO Ultra" ;
+        :intendedPurpose "Combined HIV Ag/Ab detection assay" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)03760027001018"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-018."@en ;
+        rdfs:label "VIDAS HIV DUO Ultra"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV019
+:DEV019 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :inVitroDiagnosticDeviceType ;
+        :hasManufacturer :MAN014 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassC ;
+        <http://schema.org/name> "PROGENSA PCA3 Assay" ;
+        :intendedPurpose "Urine-based prostate cancer diagnosis assay" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)07000087001019"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-019."@en ;
+        rdfs:label "PROGENSA PCA3 Assay"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV020
+:DEV020 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :inVitroDiagnosticDeviceType ;
+        :hasManufacturer :MAN002 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassD ;
+        <http://schema.org/name> "Harmony Prenatal Test" ;
+        :intendedPurpose "Non-invasive prenatal testing (NIPT) for aneuploidies" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)00800002001020"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-020."@en ;
+        rdfs:label "Harmony Prenatal Test"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV021
+:DEV021 rdf:type owl:NamedIndividual ,
+                 :IVDDevice ;
+        :hasDeviceType :selfTestDeviceType ;
+        :hasManufacturer :MAN009 ;
+        :hasRegulatoryFramework :IVDR ;
+        :hasRiskClass :ClassC ;
+        <http://schema.org/name> "OPTIGA Glucose Monitoring System" ;
+        :intendedPurpose "Continuous glucose monitor for patients with diabetes" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)07300000001021"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-021."@en ;
+        rdfs:label "OPTIGA Glucose Monitoring System"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV022
+:DEV022 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN009 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIa ;
+        <http://schema.org/name> "BeneVision N1 Patient Monitor" ;
+        :intendedPurpose "Portable patient monitor for vital signs" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)07300000001022"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-022."@en ;
+        rdfs:label "BeneVision N1 Patient Monitor"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV023
+:DEV023 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeImplantDeviceType ;
+        :hasManufacturer :MAN008 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "Tivoli II Cochlear Implant" ;
+        :intendedPurpose "Active cochlear implant for sensorineural hearing loss" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)04012099001023"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-023."@en ;
+        rdfs:label "Tivoli II Cochlear Implant"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV024
+:DEV024 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :activeDeviceType ;
+        :hasManufacturer :MAN002 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIIb ;
+        <http://schema.org/name> "Infusion Pump Plum 360" ;
+        :intendedPurpose "Large volume infusion pump with drug library" ;
+        :isActive "true"^^xsd:boolean ;
+        :isImplantable "false"^^xsd:boolean ;
+        :isReusable "true"^^xsd:boolean ;
+        :udiDI "(01)00800002001024"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-024."@en ;
+        rdfs:label "Infusion Pump Plum 360"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DEV025
+:DEV025 rdf:type owl:NamedIndividual ,
+                 :MDRDevice ;
+        :hasDeviceType :implantableDeviceType ;
+        :hasManufacturer :MAN011 ;
+        :hasRegulatoryFramework :MDR ;
+        :hasRiskClass :ClassIII ;
+        <http://schema.org/name> "ValveXpert Transcatheter Mitral Valve" ;
+        :intendedPurpose "Transcatheter mitral valve replacement system" ;
+        :isActive "false"^^xsd:boolean ;
+        :isImplantable "true"^^xsd:boolean ;
+        :isReusable "false"^^xsd:boolean ;
+        :udiDI "(01)05391520001025"^^xsd:token ;
+        rdfs:comment "Device imported from devices CSV with identifier DEV-025."@en ;
+        rdfs:label "ValveXpert Transcatheter Mitral Valve"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Denmark
+:Denmark rdf:type owl:NamedIndividual ,
+                  :Country ;
+         owl:sameAs <https://dbpedia.org/resource/Denmark> ;
+         <http://schema.org/name> "Denmark" ;
+         rdfs:comment "Country individual imported from CSV value 'Denmark'."@en ;
+         rdfs:label "Denmark"@en ;
+         rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/DNK> .
+
+
+###  https://dbpedia.org/resource/Denmark
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DeviceFailure
+:DeviceFailure rdf:type owl:NamedIndividual ,
+                        :CategoryConcept ;
+               rdfs:comment "Risk category concept individual: Device Failure."@en ;
+               rdfs:label "Device Failure"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DevicePerformance
+:DevicePerformance rdf:type owl:NamedIndividual ,
+                            :CategoryConcept ;
+                   rdfs:comment "Risk category concept individual: Device Performance."@en ;
+                   rdfs:label "Device Performance"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DeviceSafety
+:DeviceSafety rdf:type owl:NamedIndividual ,
+                       :CategoryConcept ;
+              rdfs:comment "Risk category concept individual: Device Safety."@en ;
+              rdfs:label "Device Safety"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#DiagnosticError
+:DiagnosticError rdf:type owl:NamedIndividual ,
+                          :CategoryConcept ;
+                 rdfs:comment "Risk category concept individual: Diagnostic Error."@en ;
+                 rdfs:label "Diagnostic Error"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA001
+:FSCA001 rdf:type owl:NamedIndividual ,
+                  :SafetyAlert ;
+         :correctiveActionFor :INC001 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Safety alert issued to all implanting centres regarding anticoagulation protocol update for HeartMate 3 to reduce device thrombosis risk. INR target range revised to 2.0–3.0." ;
+         :actionDate "2024-02-01"^^xsd:date ;
+         :devicesAffected "850" ;
+         :eudamedFSCARef "EU-FSCA-2024-000001"^^xsd:token ;
+         :scope "All HeartMate 3 LVAD units implanted since 2020" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000001."@en ;
+         rdfs:label "FSCA-001"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA002
+:FSCA002 rdf:type owl:NamedIndividual ,
+                  :Recall ;
+         :correctiveActionFor :INC002 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Voluntary recall of affected Micra AV lots due to premature battery depletion. Replacement units provided. 97% of affected devices successfully replaced." ;
+         :actionDate "2024-02-28"^^xsd:date ;
+         :closureDate "2024-05-31"^^xsd:date ;
+         :devicesAffected "1240" ;
+         :eudamedFSCARef "EU-FSCA-2024-000002"^^xsd:token ;
+         :scope "Micra AV lots manufactured between 2022-09 and 2023-03" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000002."@en ;
+         rdfs:label "FSCA-002"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA003
+:FSCA003 rdf:type owl:NamedIndividual ,
+                  :InSituCorrection ;
+         :correctiveActionFor :INC003 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Enhanced deployment training and updated IFU for Portico valve implantation technique. New implantation checklist mandatory for all TAVI centres." ;
+         :actionDate "2024-03-15"^^xsd:date ;
+         :closureDate "2024-06-30"^^xsd:date ;
+         :devicesAffected "320" ;
+         :eudamedFSCARef "EU-FSCA-2024-000003"^^xsd:token ;
+         :scope "Portico THV sizes 23mm and 25mm from lots before 2023-11" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000003."@en ;
+         rdfs:label "FSCA-003"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA004
+:FSCA004 rdf:type owl:NamedIndividual ,
+                  :SafetyAlert ;
+         :correctiveActionFor :INC005 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Safety communication to implanting cardiologists regarding optimal fixation technique for ACUITY X4 lead. Enhanced fluoroscopy verification protocol at implantation." ;
+         :actionDate "2024-04-10"^^xsd:date ;
+         :devicesAffected "2100" ;
+         :eudamedFSCARef "EU-FSCA-2024-000004"^^xsd:token ;
+         :scope "All ACUITY X4 quadripolar LV leads" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000004."@en ;
+         rdfs:label "FSCA-004"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA005
+:FSCA005 rdf:type owl:NamedIndividual ,
+                  :InSituCorrection ;
+         :correctiveActionFor :INC007 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Enhanced surveillance programme: annual DEXA scan and serum particle monitoring for patients with affected tibial inserts. Patients contacted individually." ;
+         :actionDate "2024-05-20"^^xsd:date ;
+         :closureDate "2024-09-30"^^xsd:date ;
+         :devicesAffected "780" ;
+         :eudamedFSCARef "EU-FSCA-2024-000005"^^xsd:token ;
+         :scope "Persona Knee tibial inserts with lot numbers PN-2019-* to PN-2021-*" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000005."@en ;
+         rdfs:label "FSCA-005"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA006
+:FSCA006 rdf:type owl:NamedIndividual ,
+                  :Recall ;
+         :correctiveActionFor :INC008 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Urgent safety recall due to elevated metal ion levels. Revision surgery recommended for patients with serum cobalt >7 ppb or symptomatic ALTR. Replacement implants provided." ;
+         :actionDate "2024-05-30"^^xsd:date ;
+         :devicesAffected "540" ;
+         :eudamedFSCARef "EU-FSCA-2024-000006"^^xsd:token ;
+         :scope "TRITON Total Hip ceramic-on-ceramic 28mm heads from lots TH-2020-* and TH-2021-*" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000006."@en ;
+         rdfs:label "FSCA-006"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA007
+:FSCA007 rdf:type owl:NamedIndividual ,
+                  :UserNotice ;
+         :correctiveActionFor :INC009 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Urgent safety notice regarding MRI scanning protocol. Updated MRI-conditional guidelines issued. Mandatory reprogramming required before any MRI scan. Programmer software update v3.2 released." ;
+         :actionDate "2024-05-25"^^xsd:date ;
+         :closureDate "2024-07-31"^^xsd:date ;
+         :devicesAffected "4300" ;
+         :eudamedFSCARef "EU-FSCA-2024-000007"^^xsd:token ;
+         :scope "All Viva CRT-D devices" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000007."@en ;
+         rdfs:label "FSCA-007"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA008
+:FSCA008 rdf:type owl:NamedIndividual ,
+                  :Recall ;
+         :correctiveActionFor :INC010 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Software recall: mandatory update to version 2.2.0 resolving FiO2 calibration error. Biomedical engineers visited all affected units within 14 days. Field service documentation required." ;
+         :actionDate "2024-06-05"^^xsd:date ;
+         :closureDate "2024-08-15"^^xsd:date ;
+         :devicesAffected "180" ;
+         :eudamedFSCARef "EU-FSCA-2024-000008"^^xsd:token ;
+         :scope "ATERA ventilators with software version 2.1.3" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000008."@en ;
+         rdfs:label "FSCA-008"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA009
+:FSCA009 rdf:type owl:NamedIndividual ,
+                  :UserNotice ;
+         :correctiveActionFor :INC011 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Customer field notification regarding biotin interference in TSH assay. Updated sample preparation protocol and interference screening algorithm released via software update 4.1.2." ;
+         :actionDate "2024-06-20"^^xsd:date ;
+         :closureDate "2024-09-30"^^xsd:date ;
+         :devicesAffected "620" ;
+         :eudamedFSCARef "EU-FSCA-2024-000009"^^xsd:token ;
+         :scope "All cobas e 801 immunoassay analysers" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000009."@en ;
+         rdfs:label "FSCA-009"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA010
+:FSCA010 rdf:type owl:NamedIndividual ,
+                  :Recall ;
+         :correctiveActionFor :INC012 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Immediate quarantine and replacement of affected reagent lots. Reflex testing protocol issued. All positive results from affected lots to be re-confirmed. New primer design covering BA.2.86 released." ;
+         :actionDate "2024-06-30"^^xsd:date ;
+         :closureDate "2024-08-31"^^xsd:date ;
+         :devicesAffected "12500 tests" ;
+         :eudamedFSCARef "EU-FSCA-2024-000010"^^xsd:token ;
+         :scope "cobas SARS-CoV-2 RT-PCR reagent lot numbers CV-2024-0312 to CV-2024-0318" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000010."@en ;
+         rdfs:label "FSCA-010"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA011
+:FSCA011 rdf:type owl:NamedIndividual ,
+                  :InSituCorrection ;
+         :correctiveActionFor :INC014 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Enhanced calibration protocol issued. Firmware update v1.8.5 mandatory improving temperature compensation algorithm. Patients instructed to perform confirmatory finger-stick at glucose readings <4.5 or >13.9 mmol/L." ;
+         :actionDate "2024-08-01"^^xsd:date ;
+         :devicesAffected "3200" ;
+         :eudamedFSCARef "EU-FSCA-2024-000011"^^xsd:token ;
+         :scope "All OPTIGA CGM sensors from manufacturing site GE-SGP-2" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000011."@en ;
+         rdfs:label "FSCA-011"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA012
+:FSCA012 rdf:type owl:NamedIndividual ,
+                  :Recall ;
+         :correctiveActionFor :INC015 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Urgent recall and remote software update. Drug library version 4.3.0 deployed correcting decimal point error. All units verified by biomedical engineering before return to clinical use." ;
+         :actionDate "2024-08-20"^^xsd:date ;
+         :closureDate "2024-10-31"^^xsd:date ;
+         :devicesAffected "2870" ;
+         :eudamedFSCARef "EU-FSCA-2024-000012"^^xsd:token ;
+         :scope "Plum 360 infusion pumps with drug library version 4.2.1" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000012."@en ;
+         rdfs:label "FSCA-012"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA013
+:FSCA013 rdf:type owl:NamedIndividual ,
+                  :SafetyAlert ;
+         :correctiveActionFor :INC016 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Safety communication regarding outflow graft kinking risk. Updated surgical technique for graft routing issued. Mandatory follow-up CT at 6 months for patients with affected lot numbers." ;
+         :actionDate "2024-09-10"^^xsd:date ;
+         :devicesAffected "420" ;
+         :eudamedFSCARef "EU-FSCA-2024-000013"^^xsd:token ;
+         :scope "All HeartMate 3 LVAD units with outflow graft lot OG-2022-*" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000013."@en ;
+         rdfs:label "FSCA-013"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA014
+:FSCA014 rdf:type owl:NamedIndividual ,
+                  :UserNotice ;
+         :correctiveActionFor :INC017 ;
+         :hasFSCAStatus :Closed ;
+         <http://schema.org/description> "Updated IFU regarding post-operative infection prophylaxis protocol. Extended topical antibiotic course (14 days) mandatory post-insertion. Healthcare professionals notified via direct mail and implanting centre visits." ;
+         :actionDate "2024-09-25"^^xsd:date ;
+         :closureDate "2024-12-31"^^xsd:date ;
+         :devicesAffected "1100" ;
+         :eudamedFSCARef "EU-FSCA-2024-000014"^^xsd:token ;
+         :scope "All Iluvien intravitreal implants" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000014."@en ;
+         rdfs:label "FSCA-014"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#FSCA015
+:FSCA015 rdf:type owl:NamedIndividual ,
+                  :InSituCorrection ;
+         :correctiveActionFor :INC018 ;
+         :hasFSCAStatus :Open ;
+         <http://schema.org/description> "Security patch 3.0.1 mandatory deployment disabling unrestricted web interface access. Network segmentation guidance issued to hospital IT departments. Penetration test report provided to competent authorities." ;
+         :actionDate "2024-10-01"^^xsd:date ;
+         :devicesAffected "890" ;
+         :eudamedFSCARef "EU-FSCA-2024-000015"^^xsd:token ;
+         :scope "All 5008S hemodialysis machines with network connectivity module v2.x" ;
+         rdfs:comment "Field safety corrective action imported from FSCA CSV with reference EU-FSCA-2024-000015."@en ;
+         rdfs:label "FSCA-015"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#France
+:France rdf:type owl:NamedIndividual ,
+                 :Country ;
+        owl:sameAs <https://dbpedia.org/resource/France> ;
+        <http://schema.org/name> "France" ;
+        rdfs:comment "Country individual imported from CSV value 'France'."@en ;
+        rdfs:label "France"@en ;
+        rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/FRA> .
+
+
+###  https://dbpedia.org/resource/France
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Germany
+:Germany rdf:type owl:NamedIndividual ,
+                  :Country ;
+         owl:sameAs <https://dbpedia.org/resource/Germany> ;
+         <http://schema.org/name> "Germany" ;
+         rdfs:comment "Country individual imported from CSV value 'Germany'."@en ;
+         rdfs:label "Germany"@en ;
+         rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/DEU> .
+
+
+###  https://dbpedia.org/resource/Germany
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#HealthProductsRegulatoryAuthority
+:HealthProductsRegulatoryAuthority rdf:type owl:NamedIndividual ,
+                                            :CompetentAuthority ;
+                                   :locatedInCountry :Ireland ;
+                                   <http://schema.org/name> "Health Products Regulatory Authority (HPRA)" ;
+                                   rdfs:comment "Competent authority associated with manufacturers in Ireland."@en ;
+                                   rdfs:label "Health Products Regulatory Authority (HPRA)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#High
+:High rdf:type owl:NamedIndividual ,
+               :ProbabilityConcept ;
+      rdfs:comment "Risk probability concept individual: High."@en ;
+      rdfs:label "High"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC001
+:INC001 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT001 ;
+        :associatedRisk :RSK003 ;
+        :involvesDevice :DEV001 ;
+        :isReportedBy :MAN001 ;
+        :reportedInCountry :Germany ;
+        <http://schema.org/description> "Patient implanted with HeartMate 3 LVAD developed ischemic stroke 6 months post-implant. Device thrombus confirmed by echocardiography." ;
+        :detectionDate "2024-01-10"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000001"^^xsd:token ;
+        :eventDate "2024-01-08"^^xsd:date ;
+        :outcome "Serious patient injury - embolic stroke" ;
+        :reportDate "2024-01-15"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000001."@en ;
+        rdfs:label "INC-001"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC002
+:INC002 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT002 ;
+        :associatedRisk :RSK009 ;
+        :involvesDevice :DEV002 ;
+        :isReportedBy :MAN001 ;
+        :reportedInCountry :France ;
+        <http://schema.org/description> "Micra AV pacemaker reached elective replacement indicator 14 months earlier than expected longevity specification." ;
+        :detectionDate "2024-02-01"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000002"^^xsd:token ;
+        :eventDate "2024-01-29"^^xsd:date ;
+        :outcome "Device malfunction - premature battery depletion" ;
+        :reportDate "2024-02-03"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000002."@en ;
+        rdfs:label "INC-002"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC003
+:INC003 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT003 ;
+        :associatedRisk :RSK005 ;
+        :involvesDevice :DEV003 ;
+        :isReportedBy :MAN002 ;
+        :reportedInCountry :Italy ;
+        <http://schema.org/description> "Portico valve showed paravalvular leak grade III due to partial migration 2 weeks post-TAVI procedure." ;
+        :detectionDate "2024-02-18"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000003"^^xsd:token ;
+        :eventDate "2024-02-15"^^xsd:date ;
+        :outcome "Surgical intervention required - valve re-anchoring" ;
+        :reportDate "2024-02-20"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000003."@en ;
+        rdfs:label "INC-003"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC004
+:INC004 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT004 ;
+        :associatedRisk :RSK002 ;
+        :involvesDevice :DEV004 ;
+        :isReportedBy :MAN006 ;
+        :reportedInCountry :Spain ;
+        <http://schema.org/description> "SYNERGY stent fracture detected on angiography 18 months post-implant causing in-stent restenosis." ;
+        :detectionDate "2024-03-03"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000004"^^xsd:token ;
+        :eventDate "2024-02-28"^^xsd:date ;
+        :outcome "Device malfunction - stent fracture" ;
+        :reportDate "2024-03-05"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000004."@en ;
+        rdfs:label "INC-004"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC005
+:INC005 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT005 ;
+        :associatedRisk :RSK006 ;
+        :involvesDevice :DEV005 ;
+        :isReportedBy :MAN006 ;
+        :reportedInCountry :Netherlands ;
+        <http://schema.org/description> "ACUITY X4 lead dislodgement to right ventricle requiring fluoroscopy-guided repositioning." ;
+        :detectionDate "2024-03-16"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000005"^^xsd:token ;
+        :eventDate "2024-03-12"^^xsd:date ;
+        :outcome "Surgical intervention required - lead extraction" ;
+        :reportDate "2024-03-18"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000005."@en ;
+        rdfs:label "INC-005"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC006
+:INC006 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK001 ;
+        :involvesDevice :DEV007 ;
+        :isReportedBy :MAN003 ;
+        :reportedInCountry :Belgium ;
+        <http://schema.org/description> "ACUSON Sequoia ultrasound system froze mid-examination. Emergency shutdown required; patient examination incomplete." ;
+        :detectionDate "2024-04-01"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000006"^^xsd:token ;
+        :eventDate "2024-04-01"^^xsd:date ;
+        :outcome "Device malfunction - complete system failure" ;
+        :reportDate "2024-04-02"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000006."@en ;
+        rdfs:label "INC-006"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC007
+:INC007 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT007 ;
+        :associatedRisk :RSK019 ;
+        :involvesDevice :DEV009 ;
+        :isReportedBy :MAN010 ;
+        :reportedInCountry :Sweden ;
+        <http://schema.org/description> "Persona knee tibial insert showing accelerated polyethylene wear with metallosis confirmed at 3-year revision surgery." ;
+        :detectionDate "2024-04-10"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000007"^^xsd:token ;
+        :eventDate "2024-03-01"^^xsd:date ;
+        :outcome "Patient harm - adverse tissue reaction" ;
+        :reportDate "2024-04-14"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000007."@en ;
+        rdfs:label "INC-007"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC008
+:INC008 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT008 ;
+        :associatedRisk :RSK020 ;
+        :involvesDevice :DEV010 ;
+        :isReportedBy :MAN007 ;
+        :reportedInCountry :Denmark ;
+        <http://schema.org/description> "TRITON hip patient presented with elevated serum cobalt (18 ppb). Adverse local tissue reaction (ALTR) confirmed by MRI." ;
+        :detectionDate "2024-04-25"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000008"^^xsd:token ;
+        :eventDate "2024-04-20"^^xsd:date ;
+        :outcome "Patient harm - cobalt toxicity" ;
+        :reportDate "2024-04-28"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000008."@en ;
+        rdfs:label "INC-008"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC009
+:INC009 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT009 ;
+        :associatedRisk :RSK013 ;
+        :involvesDevice :DEV012 ;
+        :isReportedBy :MAN008 ;
+        :reportedInCountry :Poland ;
+        <http://schema.org/description> "Viva CRT-D delivered inappropriate ICD therapy during MRI scan despite MRI-conditional programming. Patient experienced pain and syncope." ;
+        :detectionDate "2024-05-04"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000009"^^xsd:token ;
+        :eventDate "2024-05-03"^^xsd:date ;
+        :outcome "Inappropriate shock delivery" ;
+        :reportDate "2024-05-06"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000009."@en ;
+        rdfs:label "INC-009"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC010
+:INC010 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK010 ;
+        :involvesDevice :DEV013 ;
+        :isReportedBy :MAN012 ;
+        :reportedInCountry :Germany ;
+        <http://schema.org/description> "ATERA ventilator software version 2.1.3 delivered FiO2 6% lower than set value for patients in ARDS protocol. 3 patients affected." ;
+        :detectionDate "2024-05-19"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000010"^^xsd:token ;
+        :eventDate "2024-05-19"^^xsd:date ;
+        :outcome "Device malfunction - incorrect FiO2 delivery" ;
+        :reportDate "2024-05-20"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000010."@en ;
+        rdfs:label "INC-010"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC011
+:INC011 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK014 ;
+        :involvesDevice :DEV016 ;
+        :isReportedBy :MAN005 ;
+        :reportedInCountry :France ;
+        <http://schema.org/description> "cobas e 801 thyroid-stimulating hormone (TSH) assay reported false positive results (>10 mIU/L) in 12 euthyroid patients due to biotin interference." ;
+        :detectionDate "2024-06-01"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000011"^^xsd:token ;
+        :eventDate "2024-05-28"^^xsd:date ;
+        :outcome "Diagnostic error - false positive TSH results" ;
+        :reportDate "2024-06-03"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000011."@en ;
+        rdfs:label "INC-011"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC012
+:INC012 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK015 ;
+        :involvesDevice :DEV017 ;
+        :isReportedBy :MAN005 ;
+        :reportedInCountry :Spain ;
+        <http://schema.org/description> "cobas SARS-CoV-2 assay failed to detect Omicron BA.2.86 subvariant in 7 samples confirmed positive by sequencing. Lot-specific issue." ;
+        :detectionDate "2024-06-13"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000012"^^xsd:token ;
+        :eventDate "2024-06-10"^^xsd:date ;
+        :outcome "Diagnostic error - false negative SARS-CoV-2" ;
+        :reportDate "2024-06-15"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000012."@en ;
+        rdfs:label "INC-012"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC013
+:INC013 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK015 ;
+        :involvesDevice :DEV018 ;
+        :isReportedBy :MAN015 ;
+        :reportedInCountry :Germany ;
+        <http://schema.org/description> "VIDAS HIV DUO Ultra failed to detect HIV-1 group O infection in seroconversion panel. Patient missed early treatment window." ;
+        :detectionDate "2024-06-29"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000013"^^xsd:token ;
+        :eventDate "2024-06-25"^^xsd:date ;
+        :outcome "Diagnostic error - false negative HIV" ;
+        :reportDate "2024-07-01"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000013."@en ;
+        rdfs:label "INC-013"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC014
+:INC014 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT014 ;
+        :associatedRisk :RSK014 ;
+        :involvesDevice :DEV021 ;
+        :isReportedBy :MAN009 ;
+        :reportedInCountry :Netherlands ;
+        <http://schema.org/description> "OPTIGA CGM sensor reported glucose 3.8 mmol/L while laboratory reference showed 14.2 mmol/L. Patient delayed insulin administration." ;
+        :detectionDate "2024-07-15"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000014"^^xsd:token ;
+        :eventDate "2024-07-10"^^xsd:date ;
+        :outcome "Patient harm - hyperglycaemic event" ;
+        :reportDate "2024-07-18"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000014."@en ;
+        rdfs:label "INC-014"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC015
+:INC015 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT015 ;
+        :associatedRisk :RSK010 ;
+        :involvesDevice :DEV024 ;
+        :isReportedBy :MAN002 ;
+        :reportedInCountry :Italy ;
+        <http://schema.org/description> "Plum 360 infusion pump delivered 10x heparin dose due to software decimal point error in drug library version 4.2.1." ;
+        :detectionDate "2024-08-04"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000015"^^xsd:token ;
+        :eventDate "2024-08-04"^^xsd:date ;
+        :outcome "Patient harm - drug overdose" ;
+        :reportDate "2024-08-05"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000015."@en ;
+        rdfs:label "INC-015"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC016
+:INC016 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT016 ;
+        :associatedRisk :RSK004 ;
+        :involvesDevice :DEV001 ;
+        :isReportedBy :MAN001 ;
+        :reportedInCountry :UnitedKingdom ;
+        <http://schema.org/description> "HeartMate 3 patient developed severe haemolysis (LDH >2000 U/L) associated with outflow graft kinking confirmed by CT." ;
+        :detectionDate "2024-08-18"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000016"^^xsd:token ;
+        :eventDate "2024-08-15"^^xsd:date ;
+        :outcome "Patient harm - haemolytic anaemia" ;
+        :reportDate "2024-08-20"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000016."@en ;
+        rdfs:label "INC-016"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC017
+:INC017 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT017 ;
+        :associatedRisk :RSK007 ;
+        :involvesDevice :DEV011 ;
+        :isReportedBy :MAN011 ;
+        :reportedInCountry :France ;
+        <http://schema.org/description> "Iluvien implant required surgical removal due to device-related endophthalmitis confirmed by vitreous culture." ;
+        :detectionDate "2024-08-30"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000017"^^xsd:token ;
+        :eventDate "2024-08-25"^^xsd:date ;
+        :outcome "Surgical intervention - implant removal" ;
+        :reportDate "2024-09-02"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000017."@en ;
+        rdfs:label "INC-017"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC018
+:INC018 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :associatedRisk :RSK018 ;
+        :involvesDevice :DEV015 ;
+        :isReportedBy :MAN013 ;
+        :reportedInCountry :Germany ;
+        <http://schema.org/description> "5008S hemodialysis machine web interface exposed to hospital internal network. Unauthorised session accessed alarm configuration." ;
+        :detectionDate "2024-09-14"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000018"^^xsd:token ;
+        :eventDate "2024-09-12"^^xsd:date ;
+        :outcome "Cybersecurity incident - unauthorised access" ;
+        :reportDate "2024-09-15"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000018."@en ;
+        rdfs:label "INC-018"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC019
+:INC019 rdf:type owl:NamedIndividual ,
+                 :NearMissIncident ;
+        :affectedPatient :PAT019 ;
+        :associatedRisk :RSK001 ;
+        :involvesDevice :DEV023 ;
+        :isReportedBy :MAN008 ;
+        :reportedInCountry :Sweden ;
+        <http://schema.org/description> "Tivoli II cochlear implant failed to respond to initial activation programming. Sound processor replacement resolved the issue." ;
+        :detectionDate "2024-09-30"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000019"^^xsd:token ;
+        :eventDate "2024-09-28"^^xsd:date ;
+        :outcome "Near-miss - device not activated post-surgery" ;
+        :reportDate "2024-10-01"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000019."@en ;
+        rdfs:label "INC-019"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#INC020
+:INC020 rdf:type owl:NamedIndividual ,
+                 :SeriousIncident ;
+        :affectedPatient :PAT020 ;
+        :associatedRisk :RSK011 ;
+        :involvesDevice :DEV008 ;
+        :isReportedBy :MAN003 ;
+        :reportedInCountry :Belgium ;
+        <http://schema.org/description> "MAGNETOM Vida MRI caused localised skin burn (1st degree) at anterior electrode lead in patient with DBS system not declared prior to scan." ;
+        :detectionDate "2024-10-12"^^xsd:date ;
+        :eudamedIncidentRef "EU-INC-2024-000020"^^xsd:token ;
+        :eventDate "2024-10-10"^^xsd:date ;
+        :outcome "Patient harm - SAR heating injury" ;
+        :reportDate "2024-10-14"^^xsd:date ;
+        rdfs:comment "Incident imported from incidents CSV with EUDAMED reference EU-INC-2024-000020."@en ;
+        rdfs:label "INC-020"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#IVDR
+:IVDR rdf:type owl:NamedIndividual ,
+               :RegulatoryFramework ;
+      rdfs:comment "Regulatory framework individual: IVDR."@en ;
+      rdfs:label "IVDR"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Ireland
+:Ireland rdf:type owl:NamedIndividual ,
+                  :Country ;
+         owl:sameAs <https://dbpedia.org/resource/Republic_of_Ireland> ;
+         <http://schema.org/name> "Ireland" ;
+         rdfs:comment "Country individual imported from CSV value 'Ireland'."@en ;
+         rdfs:label "Ireland"@en ;
+         rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/IRL> .
+
+
+###  https://dbpedia.org/resource/Republic_of_Ireland
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Italy
+:Italy rdf:type owl:NamedIndividual ,
+                :Country ;
+       owl:sameAs <https://dbpedia.org/resource/Italy> ;
+       <http://schema.org/name> "Italy" ;
+       rdfs:comment "Country individual imported from CSV value 'Italy'."@en ;
+       rdfs:label "Italy"@en ;
+       rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/ITA> .
+
+
+###  https://dbpedia.org/resource/Italy
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#LKemedelsverket
+:LKemedelsverket rdf:type owl:NamedIndividual ,
+                          :CompetentAuthority ;
+                 :locatedInCountry :Sweden ;
+                 <http://schema.org/name> "Läkemedelsverket (MPA)" ;
+                 rdfs:comment "Competent authority associated with manufacturers in Sweden."@en ;
+                 rdfs:label "Läkemedelsverket (MPA)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Low
+:Low rdf:type owl:NamedIndividual ,
+              :ProbabilityConcept ;
+     rdfs:comment "Risk probability concept individual: Low."@en ;
+     rdfs:label "Low"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN001
+:MAN001 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :HealthProductsRegulatoryAuthority ;
+        :locatedInCountry :Ireland ;
+        <http://schema.org/email> "regulatory@medtronic.com" ;
+        <http://schema.org/name> "Medtronic plc" ;
+        :authorizationNumber "IE/2017/001234"^^xsd:token ;
+        :eudamedSRN "SRN-IE-MED-0001"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-001."@en ;
+        rdfs:label "Medtronic plc"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN002
+:MAN002 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :BundesinstitutFRArzneimittelUndMedizinprodukte ;
+        :locatedInCountry :Germany ;
+        <http://schema.org/email> "regulatory@abbott.com" ;
+        <http://schema.org/name> "Abbott Medical Devices" ;
+        :authorizationNumber "DE/2017/005678"^^xsd:token ;
+        :eudamedSRN "SRN-DE-MED-0002"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-002."@en ;
+        rdfs:label "Abbott Medical Devices"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN003
+:MAN003 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :BundesinstitutFRArzneimittelUndMedizinprodukte ;
+        :locatedInCountry :Germany ;
+        <http://schema.org/email> "regulatory@siemens-healthineers.com" ;
+        <http://schema.org/name> "Siemens Healthineers AG" ;
+        :authorizationNumber "DE/2017/009012"^^xsd:token ;
+        :eudamedSRN "SRN-DE-MED-0003"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-003."@en ;
+        rdfs:label "Siemens Healthineers AG"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN004
+:MAN004 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :RijksinstituutVoorVolksgezondheidEnMilieu ;
+        :locatedInCountry :Netherlands ;
+        <http://schema.org/email> "regulatory@philips.com" ;
+        <http://schema.org/name> "Philips Medical Systems" ;
+        :authorizationNumber "NL/2017/003456"^^xsd:token ;
+        :eudamedSRN "SRN-NL-MED-0004"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-004."@en ;
+        rdfs:label "Philips Medical Systems"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN005
+:MAN005 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :BundesinstitutFRArzneimittelUndMedizinprodukte ;
+        :locatedInCountry :Germany ;
+        <http://schema.org/email> "regulatory@roche.com" ;
+        <http://schema.org/name> "Roche Diagnostics GmbH" ;
+        :authorizationNumber "DE/2017/007890"^^xsd:token ;
+        :eudamedSRN "SRN-DE-MED-0005"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-005."@en ;
+        rdfs:label "Roche Diagnostics GmbH"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN006
+:MAN006 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :HealthProductsRegulatoryAuthority ;
+        :locatedInCountry :Ireland ;
+        <http://schema.org/email> "regulatory@bsci.com" ;
+        <http://schema.org/name> "Boston Scientific Corporation" ;
+        :authorizationNumber "IE/2017/002345"^^xsd:token ;
+        :eudamedSRN "SRN-IE-MED-0006"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-006."@en ;
+        rdfs:label "Boston Scientific Corporation"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN007
+:MAN007 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :RijksinstituutVoorVolksgezondheidEnMilieu ;
+        :locatedInCountry :Netherlands ;
+        <http://schema.org/email> "regulatory@stryker.com" ;
+        <http://schema.org/name> "Stryker Corporation" ;
+        :authorizationNumber "NL/2017/006789"^^xsd:token ;
+        :eudamedSRN "SRN-NL-MED-0007"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-007."@en ;
+        rdfs:label "Stryker Corporation"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN008
+:MAN008 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :BundesinstitutFRArzneimittelUndMedizinprodukte ;
+        :locatedInCountry :Germany ;
+        <http://schema.org/email> "regulatory@biotronik.com" ;
+        <http://schema.org/name> "Biotronik SE & Co. KG" ;
+        :authorizationNumber "DE/2017/004567"^^xsd:token ;
+        :eudamedSRN "SRN-DE-MED-0008"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-008."@en ;
+        rdfs:label "Biotronik SE & Co. KG"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN009
+:MAN009 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :LKemedelsverket ;
+        :locatedInCountry :Sweden ;
+        <http://schema.org/email> "regulatory@gehealthcare.com" ;
+        <http://schema.org/name> "GE HealthCare Technologies" ;
+        :authorizationNumber "SE/2017/008901"^^xsd:token ;
+        :eudamedSRN "SRN-SE-MED-0009"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-009."@en ;
+        rdfs:label "GE HealthCare Technologies"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN010
+:MAN010 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :Swissmedic ;
+        :locatedInCountry :Switzerland ;
+        <http://schema.org/email> "regulatory@zimmerbiomet.com" ;
+        <http://schema.org/name> "Zimmer Biomet Holdings" ;
+        :authorizationNumber "CH/2017/001122"^^xsd:token ;
+        :eudamedSRN "SRN-CH-MED-0010"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-010."@en ;
+        rdfs:label "Zimmer Biomet Holdings"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN011
+:MAN011 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :MedicinesAndHealthcareProductsRegulatoryAgency ;
+        :locatedInCountry :UnitedKingdom ;
+        <http://schema.org/email> "regulatory@livanova.com" ;
+        <http://schema.org/name> "LivaNova PLC" ;
+        :authorizationNumber "UK/2017/003344"^^xsd:token ;
+        :eudamedSRN "SRN-UK-MED-0011"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-011."@en ;
+        rdfs:label "LivaNova PLC"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN012
+:MAN012 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :BundesinstitutFRArzneimittelUndMedizinprodukte ;
+        :locatedInCountry :Germany ;
+        <http://schema.org/email> "regulatory@draeger.com" ;
+        <http://schema.org/name> "Drägerwerk AG & Co. KGaA" ;
+        :authorizationNumber "DE/2017/005566"^^xsd:token ;
+        :eudamedSRN "SRN-DE-MED-0012"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-012."@en ;
+        rdfs:label "Drägerwerk AG & Co. KGaA"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN013
+:MAN013 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :AgenceNationaleDeSCuritDuMDicament ;
+        :locatedInCountry :France ;
+        <http://schema.org/email> "regulatory@nipro.com" ;
+        <http://schema.org/name> "Nipro Corporation" ;
+        :authorizationNumber "FR/2017/007788"^^xsd:token ;
+        :eudamedSRN "SRN-FR-MED-0013"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-013."@en ;
+        rdfs:label "Nipro Corporation"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN014
+:MAN014 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :AgenceFDRaleDesMDicamentsEtDesProduitsDeSant ;
+        :locatedInCountry :Belgium ;
+        <http://schema.org/email> "regulatory@hologic.com" ;
+        <http://schema.org/name> "Hologic Inc." ;
+        :authorizationNumber "BE/2017/009900"^^xsd:token ;
+        :eudamedSRN "SRN-BE-MED-0014"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-014."@en ;
+        rdfs:label "Hologic Inc."@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MAN015
+:MAN015 rdf:type owl:NamedIndividual ,
+                 :Manufacturer ;
+        :hasCompetentAuthority :AgenceNationaleDeSCuritDuMDicament ;
+        :locatedInCountry :France ;
+        <http://schema.org/email> "regulatory@biomerieux.com" ;
+        <http://schema.org/name> "bioMérieux SA" ;
+        :authorizationNumber "FR/2017/002211"^^xsd:token ;
+        :eudamedSRN "SRN-FR-MED-0015"^^xsd:token ;
+        rdfs:comment "Manufacturer imported from manufacturers CSV with identifier MAN-015."@en ;
+        rdfs:label "bioMérieux SA"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MDR
+:MDR rdf:type owl:NamedIndividual ,
+              :RegulatoryFramework ;
+     rdfs:comment "Regulatory framework individual: MDR."@en ;
+     rdfs:label "MDR"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#MedicinesAndHealthcareProductsRegulatoryAgency
+:MedicinesAndHealthcareProductsRegulatoryAgency rdf:type owl:NamedIndividual ,
+                                                         :CompetentAuthority ;
+                                                :locatedInCountry :UnitedKingdom ;
+                                                <http://schema.org/name> "Medicines and Healthcare products Regulatory Agency (MHRA)" ;
+                                                rdfs:comment "Competent authority associated with manufacturers in United Kingdom."@en ;
+                                                rdfs:label "Medicines and Healthcare products Regulatory Agency (MHRA)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Medium
+:Medium rdf:type owl:NamedIndividual ,
+                 :ProbabilityConcept ;
+        rdfs:comment "Risk probability concept individual: Medium."@en ;
+        rdfs:label "Medium"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Moderate
+:Moderate rdf:type owl:NamedIndividual ,
+                   :SeverityConcept ;
+          rdfs:comment "Risk severity concept individual: Moderate."@en ;
+          rdfs:label "Moderate"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Netherlands
+:Netherlands rdf:type owl:NamedIndividual ,
+                      :Country ;
+             owl:sameAs <https://dbpedia.org/resource/Netherlands> ;
+             <http://schema.org/name> "Netherlands" ;
+             rdfs:comment "Country individual imported from CSV value 'Netherlands'."@en ;
+             rdfs:label "Netherlands"@en ;
+             rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/NLD> .
+
+
+###  https://dbpedia.org/resource/Netherlands
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Open
+:Open rdf:type owl:NamedIndividual ,
+               :FSCAStatusConcept ;
+      rdfs:comment "FSCA status concept individual: Open."@en ;
+      rdfs:label "Open"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT001
+:PAT001 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 58 ;
+        rdfs:comment "Affected patient profile associated with incident INC-001."@en ;
+        rdfs:label "Patient INC-001"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT002
+:PAT002 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 72 ;
+        rdfs:comment "Affected patient profile associated with incident INC-002."@en ;
+        rdfs:label "Patient INC-002"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT003
+:PAT003 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 67 ;
+        rdfs:comment "Affected patient profile associated with incident INC-003."@en ;
+        rdfs:label "Patient INC-003"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT004
+:PAT004 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 55 ;
+        rdfs:comment "Affected patient profile associated with incident INC-004."@en ;
+        rdfs:label "Patient INC-004"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT005
+:PAT005 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 63 ;
+        rdfs:comment "Affected patient profile associated with incident INC-005."@en ;
+        rdfs:label "Patient INC-005"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT007
+:PAT007 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 70 ;
+        rdfs:comment "Affected patient profile associated with incident INC-007."@en ;
+        rdfs:label "Patient INC-007"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT008
+:PAT008 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 65 ;
+        rdfs:comment "Affected patient profile associated with incident INC-008."@en ;
+        rdfs:label "Patient INC-008"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT009
+:PAT009 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 68 ;
+        rdfs:comment "Affected patient profile associated with incident INC-009."@en ;
+        rdfs:label "Patient INC-009"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT014
+:PAT014 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 45 ;
+        rdfs:comment "Affected patient profile associated with incident INC-014."@en ;
+        rdfs:label "Patient INC-014"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT015
+:PAT015 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 81 ;
+        rdfs:comment "Affected patient profile associated with incident INC-015."@en ;
+        rdfs:label "Patient INC-015"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT016
+:PAT016 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 52 ;
+        rdfs:comment "Affected patient profile associated with incident INC-016."@en ;
+        rdfs:label "Patient INC-016"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT017
+:PAT017 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 54 ;
+        rdfs:comment "Affected patient profile associated with incident INC-017."@en ;
+        rdfs:label "Patient INC-017"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT019
+:PAT019 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Male" ;
+        :patientAge 71 ;
+        rdfs:comment "Affected patient profile associated with incident INC-019."@en ;
+        rdfs:label "Patient INC-019"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PAT020
+:PAT020 rdf:type owl:NamedIndividual ,
+                 :Patient ;
+        <http://schema.org/gender> "Female" ;
+        :patientAge 38 ;
+        rdfs:comment "Affected patient profile associated with incident INC-020."@en ;
+        rdfs:label "Patient INC-020"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#PatientHarm
+:PatientHarm rdf:type owl:NamedIndividual ,
+                      :CategoryConcept ;
+             rdfs:comment "Risk category concept individual: Patient Harm."@en ;
+             rdfs:label "Patient Harm"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Poland
+:Poland rdf:type owl:NamedIndividual ,
+                 :Country ;
+        owl:sameAs <https://dbpedia.org/resource/Poland> ;
+        <http://schema.org/name> "Poland" ;
+        rdfs:comment "Country individual imported from CSV value 'Poland'."@en ;
+        rdfs:label "Poland"@en ;
+        rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/POL> .
+
+
+###  https://dbpedia.org/resource/Poland
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#ProductQuality
+:ProductQuality rdf:type owl:NamedIndividual ,
+                         :CategoryConcept ;
+                rdfs:comment "Risk category concept individual: Product Quality."@en ;
+                rdfs:label "Product Quality"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK001
+:RSK001 rdf:type owl:NamedIndividual ,
+                 :MalfunctionRisk ;
+        :hasRiskCategory :DeviceFailure ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :activeDeviceType ;
+        <http://schema.org/description> "Complete loss of electrical function leading to device shutdown" ;
+        <http://schema.org/name> "Device failure - electrical" ;
+        :imdrfCode "A0101"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-001."@en ;
+        rdfs:label "Device failure - electrical"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK002
+:RSK002 rdf:type owl:NamedIndividual ,
+                 :MalfunctionRisk ;
+        :hasRiskCategory :DeviceFailure ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Structural failure of mechanical components under physiological load" ;
+        <http://schema.org/name> "Device failure - mechanical" ;
+        :imdrfCode "A0102"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-002."@en ;
+        rdfs:label "Device failure - mechanical"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK003
+:RSK003 rdf:type owl:NamedIndividual ,
+                 :InjuryRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :implantableActiveDeviceType ;
+        <http://schema.org/description> "Thrombus formation on device surface causing embolic events" ;
+        <http://schema.org/name> "Thrombosis - device-related" ;
+        :imdrfCode "A0201"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-003."@en ;
+        rdfs:label "Thrombosis - device-related"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK004
+:RSK004 rdf:type owl:NamedIndividual ,
+                 :InjuryRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :activeImplantDeviceType ;
+        <http://schema.org/description> "Mechanical destruction of red blood cells by pump mechanism" ;
+        <http://schema.org/name> "Hemolysis - pump-induced" ;
+        :imdrfCode "A0202"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-004."@en ;
+        rdfs:label "Hemolysis - pump-induced"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK005
+:RSK005 rdf:type owl:NamedIndividual ,
+                 :MalfunctionRisk ;
+        :hasRiskCategory :DevicePerformance ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Unintended displacement of implant from intended anatomical position" ;
+        <http://schema.org/name> "Device migration - implant" ;
+        :imdrfCode "A0301"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-005."@en ;
+        rdfs:label "Device migration - implant"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK006
+:RSK006 rdf:type owl:NamedIndividual ,
+                 :MalfunctionRisk ;
+        :hasRiskCategory :DevicePerformance ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :activeImplantDeviceType ;
+        <http://schema.org/description> "Cardiac lead displacement requiring repositioning or replacement" ;
+        <http://schema.org/name> "Lead dislodgement" ;
+        :imdrfCode "A0302"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-006."@en ;
+        rdfs:label "Lead dislodgement"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK007
+:RSK007 rdf:type owl:NamedIndividual ,
+                 :InjuryRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Device-related infection at implantation site or systemic sepsis" ;
+        <http://schema.org/name> "Infection - device-related" ;
+        :imdrfCode "A0401"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-007."@en ;
+        rdfs:label "Infection - device-related"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK008
+:RSK008 rdf:type owl:NamedIndividual ,
+                 :InjuryRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :High ;
+        :hasRiskSeverity :Moderate ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Bacterial biofilm accumulation on implant surface resistant to antibiotics" ;
+        <http://schema.org/name> "Biofilm formation" ;
+        :imdrfCode "A0402"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-008."@en ;
+        rdfs:label "Biofilm formation"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK009
+:RSK009 rdf:type owl:NamedIndividual ,
+                 :MalfunctionRisk ;
+        :hasRiskCategory :DeviceFailure ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :activeImplantDeviceType ;
+        <http://schema.org/description> "Battery end-of-life earlier than specified, risking therapy interruption" ;
+        <http://schema.org/name> "Battery depletion - premature" ;
+        :imdrfCode "A0501"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-009."@en ;
+        rdfs:label "Battery depletion - premature"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK010
+:RSK010 rdf:type owl:NamedIndividual ,
+                 :SoftwareRisk ;
+        :hasRiskCategory :DeviceFailure ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :activeDeviceType ;
+        <http://schema.org/description> "Software bug causing incorrect dosing, alarming, or therapy delivery" ;
+        <http://schema.org/name> "Software malfunction" ;
+        :imdrfCode "A0502"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-010."@en ;
+        rdfs:label "Software malfunction"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK011
+:RSK011 rdf:type owl:NamedIndividual ,
+                 :RadiationRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :activeDeviceType ;
+        <http://schema.org/description> "Unintended ionising radiation exposure exceeding therapeutic dose" ;
+        <http://schema.org/name> "Radiation overdose" ;
+        :imdrfCode "A0601"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-011."@en ;
+        rdfs:label "Radiation overdose"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK012
+:RSK012 rdf:type owl:NamedIndividual ,
+                 :InterferenceRisk ;
+        :hasRiskCategory :DevicePerformance ;
+        :hasRiskProbability :High ;
+        :hasRiskSeverity :Moderate ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Metallic implant causing MRI image artifacts compromising diagnostics" ;
+        <http://schema.org/name> "Metallic artifact - MRI" ;
+        :imdrfCode "A0701"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-012."@en ;
+        rdfs:label "Metallic artifact - MRI"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK013
+:RSK013 rdf:type owl:NamedIndividual ,
+                 :InterferenceRisk ;
+        :hasRiskCategory :DevicePerformance ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :activeImplantDeviceType ;
+        <http://schema.org/description> "External EMI affecting pacemaker/ICD sensing and pacing functions" ;
+        <http://schema.org/name> "Electromagnetic interference" ;
+        :imdrfCode "A0702"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-013."@en ;
+        rdfs:label "Electromagnetic interference"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK014
+:RSK014 rdf:type owl:NamedIndividual ,
+                 :DiagnosticRisk ;
+        :hasRiskCategory :DiagnosticError ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :inVitroDiagnosticDeviceType ;
+        <http://schema.org/description> "IVD test returns positive result in absence of target condition" ;
+        <http://schema.org/name> "False positive result" ;
+        :imdrfCode "B0101"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-014."@en ;
+        rdfs:label "False positive result"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK015
+:RSK015 rdf:type owl:NamedIndividual ,
+                 :DiagnosticRisk ;
+        :hasRiskCategory :DiagnosticError ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :inVitroDiagnosticDeviceType ;
+        <http://schema.org/description> "IVD test fails to detect target condition in affected individual" ;
+        <http://schema.org/name> "False negative result" ;
+        :imdrfCode "B0102"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-015."@en ;
+        rdfs:label "False negative result"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK016
+:RSK016 rdf:type owl:NamedIndividual ,
+                 :DiagnosticRisk ;
+        :hasRiskCategory :DiagnosticError ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :inVitroDiagnosticDeviceType ;
+        <http://schema.org/description> "Reagent reacts with non-target analyte producing incorrect result" ;
+        <http://schema.org/name> "Cross-reactivity" ;
+        :imdrfCode "B0201"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-016."@en ;
+        rdfs:label "Cross-reactivity"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK017
+:RSK017 rdf:type owl:NamedIndividual ,
+                 :ContaminationRisk ;
+        :hasRiskCategory :ProductQuality ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :inVitroDiagnosticDeviceType ;
+        <http://schema.org/description> "Reagent lot contamination leading to systematic diagnostic errors" ;
+        <http://schema.org/name> "Contamination - reagent" ;
+        :imdrfCode "B0301"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-017."@en ;
+        rdfs:label "Contamination - reagent"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK018
+:RSK018 rdf:type owl:NamedIndividual ,
+                 :CybersecurityRisk ;
+        :hasRiskCategory :DeviceSafety ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Critical ;
+        :impactsDeviceType :activeDeviceType ;
+        <http://schema.org/description> "Exploitable software vulnerability enabling unauthorized device access" ;
+        <http://schema.org/name> "Cybersecurity vulnerability" ;
+        :imdrfCode "B0401"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-018."@en ;
+        rdfs:label "Cybersecurity vulnerability"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK019
+:RSK019 rdf:type owl:NamedIndividual ,
+                 :MaterialRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Medium ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Particulate debris from bearing surfaces causing adverse tissue reaction" ;
+        <http://schema.org/name> "Wear debris - joint implant" ;
+        :imdrfCode "C0101"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-019."@en ;
+        rdfs:label "Wear debris - joint implant"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RSK020
+:RSK020 rdf:type owl:NamedIndividual ,
+                 :MaterialRisk ;
+        :hasRiskCategory :PatientHarm ;
+        :hasRiskProbability :Low ;
+        :hasRiskSeverity :Serious ;
+        :impactsDeviceType :implantableDeviceType ;
+        <http://schema.org/description> "Metallic ion release from corrosion causing local or systemic toxicity" ;
+        <http://schema.org/name> "Corrosion - metallic implant" ;
+        :imdrfCode "C0201"^^xsd:token ;
+        rdfs:comment "Risk imported from risks CSV with identifier RSK-020."@en ;
+        rdfs:label "Corrosion - metallic implant"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#RijksinstituutVoorVolksgezondheidEnMilieu
+:RijksinstituutVoorVolksgezondheidEnMilieu rdf:type owl:NamedIndividual ,
+                                                    :CompetentAuthority ;
+                                           :locatedInCountry :Netherlands ;
+                                           <http://schema.org/name> "Rijksinstituut voor Volksgezondheid en Milieu (RIVM)" ;
+                                           rdfs:comment "Competent authority associated with manufacturers in Netherlands."@en ;
+                                           rdfs:label "Rijksinstituut voor Volksgezondheid en Milieu (RIVM)"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Serious
+:Serious rdf:type owl:NamedIndividual ,
+                  :SeverityConcept ;
+         rdfs:comment "Risk severity concept individual: Serious."@en ;
+         rdfs:label "Serious"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Spain
+:Spain rdf:type owl:NamedIndividual ,
+                :Country ;
+       owl:sameAs <https://dbpedia.org/resource/Spain> ;
+       <http://schema.org/name> "Spain" ;
+       rdfs:comment "Country individual imported from CSV value 'Spain'."@en ;
+       rdfs:label "Spain"@en ;
+       rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/ESP> .
+
+
+###  https://dbpedia.org/resource/Spain
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Sweden
+:Sweden rdf:type owl:NamedIndividual ,
+                 :Country ;
+        owl:sameAs <https://dbpedia.org/resource/Sweden> ;
+        <http://schema.org/name> "Sweden" ;
+        rdfs:comment "Country individual imported from CSV value 'Sweden'."@en ;
+        rdfs:label "Sweden"@en ;
+        rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/SWE> .
+
+
+###  https://dbpedia.org/resource/Sweden
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Swissmedic
+:Swissmedic rdf:type owl:NamedIndividual ,
+                     :CompetentAuthority ;
+            :locatedInCountry :Switzerland ;
+            <http://schema.org/name> "Swissmedic" ;
+            rdfs:comment "Competent authority associated with manufacturers in Switzerland."@en ;
+            rdfs:label "Swissmedic"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#Switzerland
+:Switzerland rdf:type owl:NamedIndividual ,
+                      :Country ;
+             owl:sameAs <https://dbpedia.org/resource/Switzerland> ;
+             <http://schema.org/name> "Switzerland" ;
+             rdfs:comment "Country individual imported from CSV value 'Switzerland'."@en ;
+             rdfs:label "Switzerland"@en ;
+             rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/CHE> .
+
+
+###  https://dbpedia.org/resource/Switzerland
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#UnitedKingdom
+:UnitedKingdom rdf:type owl:NamedIndividual ,
+                        :Country ;
+               owl:sameAs <https://dbpedia.org/resource/United_Kingdom> ;
+               <http://schema.org/name> "United Kingdom" ;
+               rdfs:comment "Country individual imported from CSV value 'United Kingdom'."@en ;
+               rdfs:label "United Kingdom"@en ;
+               rdfs:seeAlso <http://publications.europa.eu/resource/authority/country/GBR> .
+
+
+###  https://dbpedia.org/resource/United_Kingdom
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#activeDeviceType
+:activeDeviceType rdf:type owl:NamedIndividual ,
+                           :DeviceType ;
+                  rdfs:comment "Device requiring an energy source to operate." ;
+                  rdfs:label "active device type" .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#activeImplantDeviceType
+:activeImplantDeviceType rdf:type owl:NamedIndividual ,
+                                  :DeviceType ;
+                         rdfs:comment "Controlled device type individual: Active implant device type."@en ;
+                         rdfs:label "Active implant device type"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#implantableActiveDeviceType
+:implantableActiveDeviceType rdf:type owl:NamedIndividual ,
+                                      :DeviceType ;
+                             rdfs:comment "Controlled device type individual: Implantable active device type."@en ;
+                             rdfs:label "Implantable active device type"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#implantableDeviceType
+:implantableDeviceType rdf:type owl:NamedIndividual ,
+                                :DeviceType ;
+                       rdfs:comment "Controlled device type individual: Implantable device type."@en ;
+                       rdfs:label "Implantable device type"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#inVitroDiagnosticDeviceType
+:inVitroDiagnosticDeviceType rdf:type owl:NamedIndividual ,
+                                      :DeviceType ;
+                             rdfs:comment "Controlled device type individual: In vitro diagnostic device type."@en ;
+                             rdfs:label "In vitro diagnostic device type"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#selfTestDeviceType
+:selfTestDeviceType rdf:type owl:NamedIndividual ,
+                             :DeviceType ;
+                    rdfs:comment "Controlled device type individual: Self-test device type."@en ;
+                    rdfs:label "Self-test device type"@en .
+
+
+###  http://www.uoc.edu/knowledgeManagement/eu-medical-devices#singleUseDeviceType
+:singleUseDeviceType rdf:type owl:NamedIndividual ,
+                              :DeviceType ;
+                     rdfs:comment "Controlled device type individual: Single-use device type."@en ;
+                     rdfs:label "Single-use device type"@en .
+
+
+###  https://dbpedia.org/resource/Belgium
+<https://dbpedia.org/resource/Belgium> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Denmark
+<https://dbpedia.org/resource/Denmark> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/France
+<https://dbpedia.org/resource/France> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Germany
+<https://dbpedia.org/resource/Germany> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Italy
+<https://dbpedia.org/resource/Italy> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Netherlands
+<https://dbpedia.org/resource/Netherlands> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Poland
+<https://dbpedia.org/resource/Poland> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Republic_of_Ireland
+<https://dbpedia.org/resource/Republic_of_Ireland> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Spain
+<https://dbpedia.org/resource/Spain> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Sweden
+<https://dbpedia.org/resource/Sweden> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/Switzerland
+<https://dbpedia.org/resource/Switzerland> rdf:type owl:NamedIndividual .
+
+
+###  https://dbpedia.org/resource/United_Kingdom
+<https://dbpedia.org/resource/United_Kingdom> rdf:type owl:NamedIndividual .
+
+
+#################################################################
+#    Rules
+#################################################################
+
+:d rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:i rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:a rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+:m rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Classifies devices with regulatory risk class III as high-risk devices." ;
+   rdfs:label "Infer high-risk devices" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Device ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :d
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasRiskClass ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :d ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :ClassIII
+                                                                ] ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :HighRiskDevice ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :d
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Classifies incidents with an associated field safety corrective action as corrected incidents." ;
+   rdfs:label "Infer corrected incidents" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Incident ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :i
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasCorrectiveAction ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :i ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :a
+                                                                ] ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :CorrectedIncident ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :i
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+   rdfs:comment "Infers the manufacturer involved in an incident from the device involved in that incident." ;
+   rdfs:label "Infer manufacturer from incident" ;
+   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
+   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :Incident ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :i
+                                                     ] ;
+                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :involvesDevice ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument1> :i ;
+                                                                  <http://www.w3.org/2003/11/swrl#argument2> :d
+                                                                ] ;
+                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasManufacturer ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument1> :d ;
+                                                                             <http://www.w3.org/2003/11/swrl#argument2> :m
+                                                                           ] ;
+                                                                 rdf:rest rdf:nil
+                                                               ]
+                                                    ]
+                                         ] ;
+   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
+                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :involvesManufacturer ;
+                                                       <http://www.w3.org/2003/11/swrl#argument1> :i ;
+                                                       <http://www.w3.org/2003/11/swrl#argument2> :m
+                                                     ] ;
+                                           rdf:rest rdf:nil
+                                         ]
+ ] .
+
+###  Generated by the OWL API (version 5.1.18) https://github.com/owlcs/owlapi/
